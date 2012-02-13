@@ -1,0 +1,15 @@
+grid mil
+grid 5
+CHANGE DRILL 16
+VIA 'LED_SENSOR_C13' auto round (4345 1685)
+VIA 'LED_SENSOR_C14' auto round (4445 1735)
+VIA 'LED_SENSOR_C15' auto round (4545 1785)
+VIA 'LED_SENSOR_C16' auto round (4645 1835)
+VIA 'LED_SENSOR_C17' auto round (4745 1885)
+VIA 'LED_SENSOR_C18' auto round (4845 1935)
+VIA 'LED_SENSOR_C19' auto round (4945 1985)
+VIA 'LED_SENSOR_C20' auto round (5045 2035)
+VIA 'LED_SENSOR_C21' auto round (5145 2085)
+VIA 'LED_SENSOR_C22' auto round (5245 2135)
+VIA 'LED_SENSOR_C23' auto round (5345 2185)
+VIA 'LED_SENSOR_C24' auto round (5445 2235)

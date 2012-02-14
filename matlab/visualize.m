@@ -3,7 +3,7 @@ function visualize
 
 nrow = 8;
 ncolumn = 22;
-calibrationFrame = 10;
+calibrationFrame = 30;
 offsetImage = zeros(ncolumn, nrow);
 running = true;
 

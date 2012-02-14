@@ -7,34 +7,45 @@ column = 22;
 %s = serial(available_ports(1));
 s = serial('/dev/tty.usbserial-A900UD1B');
 set(s, 'BaudRate',230400)
+set(s, 'InputBufferSize', 50000);
 fopen(s);
 
 failindice = [];
 
-image = uint16(ones(row, column));
-sumimage = ones(row, column);
+image = uint16(zeros(column, row));
+sumimage = zeros(column, row);
+
+while (s.BytesAvailable <= 0) 
+    fwrite(s, [255], 'uint8');
+    pause(0.01);
+end
+
+calibrationFrame = 10;
+offsetImage = zeros(column, row);
+for i=1:calibrationFrame
+   fwrite(s, [255], 'uint8');
+   offsetImage = offsetImage + fread(s, [column, row], 'uint16'); 
+end
+offsetImage = offsetImage ./ calibrationFrame;
+
 for i = 1:600
-   while (fread(s, 1, 'uchar') ~= 255)
-     ;
-   end
-%    for j = 1:8
-%       image(j, :) = uint16(fread(s, [1,14], 'uint16'));
-%       imshow(image);
-%       drawnow;
-%    end
-   image = fread(s, [row, column], 'uint16'); 
-   sumimage = sumimage + image;
-   failindice = intersect(failindice, find(image<500));
+   fwrite(s, [255], 'uint8');
+   rawimage = fread(s, [column, row], 'uint16'); 
+   image = min(2047, max(0, rawimage - offsetImage));
+   %image = image .^ 0.333 .* 20;
+   image = image .^ 0.5 .* 5;
+   %sumimage = sumimage + image;
+   %failindice = intersect(failindice, find(image<500));
    %surf(1:14, 1:8, image);
-   imshow(uint16(image));
+   imshow(uint8(image));
    drawnow
 end
 
-sumimage = sumimage ./ 600;
+%sumimage = sumimage ./ 600;
 %hist(sumimage(:), 0:10:10000);
 
 
-ind2sub(size(image), failindice)
+%ind2sub(size(image), failindice)
 
 fclose(s);
 delete(s);
